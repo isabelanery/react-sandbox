@@ -3,12 +3,23 @@
 
   <v-container width="800px" class="mt-6">
     <SearchBar v-model="searchQuery" />
-    <v-row>
+
+    <div width="800px" class="mt-16 centered-loading" v-if="isLoading">
+      <v-progress-circular
+        indeterminate
+        size="50"
+        color="primary"
+        class="d-flex justify-center mt-4"
+      ></v-progress-circular>
+    </div>
+
+    <v-row v-else>
       <v-col v-for="video in filteredVideos" :key="video.id" cols="12" md="4">
         <VideoCard :video="video" @click="openVideo(video.id)" />
       </v-col>
     </v-row>
-    <EmptyState v-if="filteredVideos.length === 0" message="Nenhum vídeo encontrado." />
+
+    <EmptyState v-if="!isLoading && filteredVideos.length === 0" message="Nenhum vídeo encontrado." />
   </v-container>
 </template>
 
@@ -25,6 +36,7 @@ export default {
       apiKey: '',
       videos: [],
       searchQuery: '',
+      isLoading: false,
     };
   },
   computed: {
@@ -36,9 +48,12 @@ export default {
   },
   methods: {
     async fetchVideos() {
+      this.isLoading = true;
+
       try {
         const data = await fecthVideosListData(this.apiKey);
         this.videos = data.videos || [];
+        this.isLoading = false;
       } catch (error) {
         console.error("Erro ao buscar vídeos:", error);
         this.$router.push('/');
@@ -67,3 +82,10 @@ export default {
   },
 };
 </script>
+
+<style>
+  .centered-loading {
+    display: flex;
+    justify-content: center;
+  }
+</style>
