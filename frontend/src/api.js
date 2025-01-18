@@ -3,9 +3,9 @@ export async function validateApiKey(apiKey) {
   return !!await fecthVideosListData(apiKey);
 }
 
-export async function fecthVideosListData(apiKey) {
+export async function fecthVideosListData(apiKey, currentPage = 1) {
   try {
-    const url = "https://api-v2.pandavideo.com.br/videos";
+    const url = `https://api-v2.pandavideo.com.br/videos?page=${currentPage}`;
 
     const response = await fetch(url, {
       method: "GET",

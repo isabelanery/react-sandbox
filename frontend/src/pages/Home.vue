@@ -4,31 +4,41 @@
   <v-container width="800px" class="mt-6">
     <SearchBar v-model="searchQuery" />
 
-    <div v-if="isLoading" width="800px" class="mt-16 centered-loading">
-      <v-progress-circular indeterminate size="50" color="primary" class="d-flex justify-center mt-4"></v-progress-circular>
-    </div>
+    <div class="videos-container">
+      <div v-if="videos.length > 0">
+        <div class="mt-4">
+          <v-chip
+            :color="selectedFolder === null ? 'primary' : ''"
+            :variant="selectedFolder === null ? 'flat' : 'tonal'"
+            @click="clearFolderFilter"
+            class="mr-2"
+          >
+            Todos ({{ totalVideos }})
+          </v-chip>
 
-    <div v-else>
-      <div class="mt-4">
-        <v-chip
-          v-for="folder in folders"
-          :key="folder.id"
-          :color="selectedFolder === folder.id ? 'primary' : ''"
-          :variant="selectedFolder === folder.id ? 'flat' : 'tonal'"
-          @click="filterByFolder(folder.id)"
-          class="mr-2"
-        >
-          {{ folder.name }} ({{ folder.videoCount }})
-        </v-chip>
+          <v-chip
+            v-for="folder in folders"
+            :key="folder.id"
+            :color="selectedFolder === folder.id ? 'primary' : ''"
+            :variant="selectedFolder === folder.id ? 'flat' : 'tonal'"
+            @click="filterByFolder(folder.id)"
+            class="mr-2"
+          >
+            {{ folder.name }} ({{ folder.videoCount }})
+          </v-chip>
+        </div>
+
+        <v-row class="mt-8">
+          <v-col v-for="video in filteredVideos" :key="video.id" cols="12" md="4">
+            <VideoCard :video="video" @click="openVideo(video.id)" />
+          </v-col>
+        </v-row>
       </div>
 
-      <v-row class="mt-8">
-        <v-col v-for="video in filteredVideos" :key="video.id" cols="12" md="4">
-          <VideoCard :video="video" @click="openVideo(video.id)" />
-        </v-col>
-      </v-row>
+      <div v-if="isLoading || (currentPage < totalPages)" width="800px" class="mt-16 centered-loading">
+        <v-progress-circular indeterminate size="50" color="primary" class="d-flex justify-center mt-4"></v-progress-circular>
+      </div>
     </div>
-
 
     <EmptyState v-if="!isLoading && filteredVideos.length === 0" message="Nenhum vídeo encontrado." />
   </v-container>
@@ -50,6 +60,9 @@ export default {
       selectedFolder: null,
       searchQuery: '',
       isLoading: false,
+      currentPage: 1,
+      totalPages: 1,
+      totalVideos: 0,
     };
   },
   computed: {
@@ -63,17 +76,29 @@ export default {
     },
   },
   methods: {
-    async fetchData() {
+    async fetchVideos() {
       this.isLoading = true;
 
       try {
-        const data = await fecthVideosListData(this.apiKey);
-        this.videos = data.videos || [];
-        this.folders = await getFolders(this.apiKey) || [];
+        const data = await fecthVideosListData(this.apiKey, this.currentPage);
 
+        this.videos = [...this.videos, ...data.videos];
+        this.isLoading = false;
+        this.totalPages = data.pages || 1;
+        this.totalVideos = data.total || 1;
+      } catch (error) {
+        console.error("Erro ao buscar videos:", error);
+        this.$router.push('/');
+      }
+    },
+    async fetchFolders() {
+      this.isLoading = true;
+
+      try {
+        this.folders = await getFolders(this.apiKey) || [];
         this.isLoading = false;
       } catch (error) {
-        console.error("Erro ao buscar dados da API:", error);
+        console.error("Erro ao buscar pastas:", error);
         this.$router.push('/');
       }
     },
@@ -88,6 +113,16 @@ export default {
       deleteApiKey();
       this.$router.push('/');
     },
+    onScroll() {
+      const bottom = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) === window.innerHeight + window.scrollY;
+      if (bottom && !this.isLoading && this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.fetchVideos();
+      }
+    },
+    clearFolderFilter() {
+      this.selectedFolder = null;
+    },
   },
   created() {
     const apiKey = getApiKey();
@@ -99,8 +134,14 @@ export default {
     this.apiKey = getApiKey() || '';
 
     if (this.apiKey) {
-      await this.fetchData();
+      await this.fetchFolders();
+      await this.fetchVideos();
     }
+
+    window.addEventListener('scroll', this.onScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.onScroll);
   },
 };
 </script>
@@ -109,5 +150,9 @@ export default {
 .centered-loading {
   display: flex;
   justify-content: center;
+}
+
+.videos-container {
+  min-height: 80vh;
 }
 </style>
