@@ -5,7 +5,15 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   server: {
-    port: 8080,        // Define a porta 8080
-    host: '0.0.0.0',   // Faz o servidor ser acessível de fora do container
+    port: 8080,
+    host: '0.0.0.0',
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    transformMode: {
+      web: [/\.vue$/],
+    },
+    setupFiles: './setupTests.js',
   },
 })

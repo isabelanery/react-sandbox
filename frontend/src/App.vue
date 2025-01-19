@@ -1,7 +1,9 @@
 <template>
-  <router-view />
+  <RouterView />
 </template>
 
 <style>
-
+.cursor-pointer {
+  cursor: pointer;
+}
 </style>

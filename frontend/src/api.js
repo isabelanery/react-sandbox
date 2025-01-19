@@ -80,11 +80,11 @@ export async function updateVideoTitle(apiKey, videoId, newTitle) {
     });
 
     if (response.ok) {
-      console.log("Título atualizado com sucesso:", data);
+      console.log("Título atualizado com sucesso");
       return true;
     }
   } catch (error) {
-    console.error("Erro na atualização do título:", error);
+    console.error("Erro ao realizar a requisição:", error);
     return false;
   }
 }
