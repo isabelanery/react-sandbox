@@ -1,9 +1,9 @@
 // src/utils/api.js
 export async function validateApiKey(apiKey) {
-  return !!await fecthVideosListData(apiKey);
+  return !!await fetchVideosListData(apiKey);
 }
 
-export async function fecthVideosListData(apiKey, currentPage = 1) {
+export async function fetchVideosListData(apiKey, currentPage = 1) {
   try {
     const url = `https://api-v2.pandavideo.com.br/videos?page=${currentPage}`;
 

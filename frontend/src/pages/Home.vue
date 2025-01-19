@@ -48,7 +48,7 @@
 import SearchBar from '../components/SearchBar.vue';
 import VideoCard from '../components/VideoCard.vue';
 import EmptyState from '../components/EmptyState.vue';
-import { deleteApiKey, fecthVideosListData, getApiKey, getFolders } from '../api';
+import { deleteApiKey, fetchVideosListData, getApiKey, getFolders } from '../api';
 
 export default {
   components: { SearchBar, VideoCard, EmptyState },
@@ -80,7 +80,7 @@ export default {
       this.isLoading = true;
 
       try {
-        const data = await fecthVideosListData(this.apiKey, this.currentPage);
+        const data = await fetchVideosListData(this.apiKey, this.currentPage);
 
         this.videos = [...this.videos, ...data.videos];
         this.isLoading = false;
