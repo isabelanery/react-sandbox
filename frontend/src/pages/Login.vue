@@ -30,16 +30,21 @@
 </template>
 
 <script>
-
-import { validateApiKey } from "../api";
+import { getApiKey, validateApiKey } from "../api";
 
 export default {
   data() {
     return {
       apiKey: "",
       loading: false,
-      errorMessage: ""
+      errorMessage: "",
     };
+  },
+  beforeMount() {
+    const isAuthenticated = getApiKey();
+    if (isAuthenticated) {
+      this.$router.push("/home");
+    }
   },
   methods: {
     isFormValid() {
@@ -65,7 +70,6 @@ export default {
 
       this.loading = false;
     },
-
-  }
+  },
 };
 </script>
