@@ -19,12 +19,24 @@ O projeto usa Docker Compose para configurar todos os serviços necessários.
   docker-compose up --build
   ```
 
-### 3. Acessar a aplicação
+### 3. Rodar migrations
+Em um terminal separado, rode as migrations para configurar o banco de dados:
+```bash
+docker-compose exec backend npx sequelize-cli db:migrate
+```
+
+### 4. Rodar seeds
+Em outro terminal, rode os seeds para popular o banco de dados com dados iniciais:
+```bash
+docker-compose exec backend npx sequelize-cli db:seed:all
+```
+
+### 5. Acessar a aplicação
 
 - **Frontend**: A aplicação Vue.js estará disponível em `http://localhost:8080`.
 - **Backend**: O servidor Express estará disponível em `http://localhost:3000`.
 
-### 4. Parar os containers
+### 6. Parar os containers
 
 Para parar todos os containers, execute:
 ```bash
