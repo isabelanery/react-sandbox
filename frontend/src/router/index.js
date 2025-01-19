@@ -7,7 +7,7 @@ import { getApiKey } from '../api';
 const routes = [
   { path: '/', component: Login },
   { path: '/home', component: Home, meta: { requiresAuth: true } },
-  { path: '/video/:id', component: Video, meta: { requiresAuth: true } },
+  { path: '/video/:videoId', component: Video, meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({
