@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { authenticationToken, loginUser } from "../services/login";
+import { authenticationToken, loginUser, saveSession } from "../services/login";
 
 export default {
   data() {
