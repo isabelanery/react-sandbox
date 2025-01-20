@@ -38,9 +38,10 @@
       <div v-if="isLoading || (currentPage < totalPages)" width="800px" class="mt-16 centered-loading">
         <v-progress-circular indeterminate size="50" color="primary" class="d-flex justify-center mt-4"></v-progress-circular>
       </div>
+
+      <EmptyState v-if="!isLoading && filteredVideos.length === 0" message="Nenhum vídeo encontrado." />
     </div>
 
-    <EmptyState v-if="!isLoading && filteredVideos.length === 0" message="Nenhum vídeo encontrado." />
   </v-container>
 </template>
 

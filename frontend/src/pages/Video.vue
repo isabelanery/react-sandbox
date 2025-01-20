@@ -6,13 +6,15 @@
       {{ error }}
     </v-alert>
 
-    <v-progress-circular
-      v-if="isLoading"
-      indeterminate
-      size="50"
-      color="primary"
-      class="d-flex justify-center mt-4"
-    ></v-progress-circular>
+
+    <div v-if="isLoading" class="loading_container">
+      <v-progress-circular
+        indeterminate
+        size="50"
+        color="primary"
+        class="d-flex justify-center mt-4"
+      ></v-progress-circular>
+    </div>
 
     <v-card v-if="video && !error">
       <v-card-text>
@@ -189,5 +191,13 @@ export default {
 .text-overflow {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.loading_container {
+  width: 400px;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
