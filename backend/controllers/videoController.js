@@ -1,15 +1,7 @@
 require('dotenv').config();
 const axios = require('axios');
 const redis = require('../config/redisClient');
-
-const API_KEY = process.env.API_KEY;
-const PANDA_API_URL = 'https://api-v2.pandavideo.com.br/videos';
-const REQUEST_HEADER = {
-  headers: {
-    Authorization: `${API_KEY}`,
-    Accept: 'application/json',
-  },
-};
+const { REQUEST_HEADER, PANDA_BASE_API_URL } = require('../shared/panda_config');
 
 const listVideos = async (req, res) => {
   const { page = 1 } = req.query;
@@ -24,7 +16,7 @@ const listVideos = async (req, res) => {
     }
 
     console.log(`🟢 Buscando página ${page} da API Panda Video`);
-    const response = await axios.get(`${PANDA_API_URL}?page=${page}`, REQUEST_HEADER);
+    const response = await axios.get(`${PANDA_BASE_API_URL}/videos?page=${page}`, REQUEST_HEADER);
 
     const videosData = response.data;
 
@@ -41,7 +33,7 @@ const getVideoById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const response = await axios.get(`${PANDA_API_URL}/${id}`, REQUEST_HEADER);
+    const response = await axios.get(`${PANDA_BASE_API_URL}/videos/${id}`, REQUEST_HEADER);
 
     return res.status(200).json(response.data);
   } catch (error) {
@@ -60,7 +52,7 @@ const updateVideoTitle = async (req, res) => {
 
   try {
     const response = await axios.put(
-      `${PANDA_API_URL}/${id}`,
+      `${PANDA_BASE_API_URL}/videos/${id}`,
       { title },
       REQUEST_HEADER
     );
