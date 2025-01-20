@@ -1,44 +1,59 @@
+# Panda Video 🐼🎥
 
-# Panda Video Test
+## 🚀 Setup
 
-Este repositório contém a implementação de um projeto full-stack que utiliza as tecnologias Vue.js, Vuetify, Node.js, Express, PostgreSQL, Redis e Docker. O objetivo deste teste técnico é criar uma aplicação que interaja com a API da Panda Video.
+1. **Clone o repositório:**
+   ```sh
+   git clone git@github.com:isabelanery/panda_videos.git
+   cd panda_video
+   ```
+2. **Configuração do ambiente:**
+   - Renomeie `.env.example` para `.env` e adicione sua `API_KEY` da Panda Video.
 
-## Como Rodar o Projeto
+3. **Subindo a aplicação:**
+   ```sh
+   docker-compose up --build
+   ```
 
-### 1. Clonar o repositório
-```bash
-git clone <url-do-repositorio>
-cd panda-video-test
+## 🔑 Acesso Padrão
+
+- O frontend estará disponível em `http://localhost:8080`.
+- O backend estará disponível em `http://localhost:3000`.
+
+Usuário pré-cadastrado:
+```sh
+email: kungfu@panda.com
+password: kungfupanda
 ```
 
-### 2. Configurar e subir os containers
-O projeto usa Docker Compose para configurar todos os serviços necessários.
+## 📦 Tecnologias Utilizadas
 
-- Para rodar os containers com a configuração de desenvolvimento, execute:
-  ```bash
-  docker-compose up --build
-  ```
+- **Frontend**:
+  - Vue.js
+  - Vuetify
 
-### 3. Rodar migrations
-Em um terminal separado, rode as migrations para configurar o banco de dados:
-```bash
-docker-compose exec backend npx sequelize-cli db:migrate
-```
+- **Backend**:
+  - Node.js + Express
+  - PostgreSQL (banco de dados)
+  - Redis (cache de vídeos)
+  - Sequelize (ORM para banco de dados)
+  - JWT (autenticação)
+  - Axios (requisições HTTP)
 
-### 4. Rodar seeds
-Em outro terminal, rode os seeds para popular o banco de dados com dados iniciais:
-```bash
-docker-compose exec backend npx sequelize-cli db:seed:all
-```
+- **Infraestrutura**:
+  - Docker + Docker Compose
 
-### 5. Acessar a aplicação
+## 📌 Observações
+- O projeto **só funciona via Docker** devido à dependência do Redis.
 
-- **Frontend**: A aplicação Vue.js estará disponível em `http://localhost:8080`.
-- **Backend**: O servidor Express estará disponível em `http://localhost:3000`.
+## 📌 Endpoints
 
-### 6. Parar os containers
+- **Autenticação:** `POST /api/login`
+- **Listar vídeos:** `GET /api/videos`
+- **Detalhes do vídeo:** `GET /api/videos/:id`
+- **Editar vídeo:** `PUT /api/videos/:id`
+- **Listar pastas:** `GET /api/folders`
 
-Para parar todos os containers, execute:
-```bash
-docker-compose down
-```
+
+🚀 Bom uso!
+
