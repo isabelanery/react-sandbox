@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const sequelize = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
+const videoRoutes = require('./routes/videoRoutes');
 
 const app = express();
 app.use(express.json());
@@ -14,7 +15,9 @@ sequelize.sync().then(() => {
 
 app.use('/api', userRoutes);
 
-app.get('/', (req, res) => {
+app.use('/api', videoRoutes);
+
+app.get('/', (_req, res) => {
   res.send('API funcionando!');
 });
 
