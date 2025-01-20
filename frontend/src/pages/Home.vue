@@ -90,7 +90,6 @@ export default {
         this.totalVideos = data.total || 1;
       } catch (error) {
         console.error("Erro ao buscar videos:", error);
-        this.$router.push('/');
       }
     },
     async fetchFolders() {
@@ -101,7 +100,6 @@ export default {
         this.isLoading = false;
       } catch (error) {
         console.error("Erro ao buscar pastas:", error);
-        this.$router.push('/');
       }
     },
     filterByFolder(folderId) {
