@@ -12,6 +12,8 @@
           outlined
           required
           type="email"
+          :error-messages="emailError"
+          @blur="validateEmail"
         />
         <v-text-field
           v-model="password"
@@ -20,6 +22,7 @@
           required
           type="password"
           :error-messages="errorMessage"
+          @keyup.enter="login"
         />
       </v-card-text>
       <v-card-actions>
@@ -47,6 +50,7 @@ export default {
       password: "",
       loading: false,
       errorMessage: "",
+      emailError: "",
     };
   },
   beforeMount() {
@@ -56,17 +60,30 @@ export default {
     }
   },
   methods: {
+    isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    },
+    validateEmail() {
+      if (!this.isValidEmail(this.email)) {
+        this.emailError = "Por favor, insira um email válido!";
+      } else {
+        this.emailError = "";
+      }
+    },
     isFormValid() {
-      return this.email.trim() !== '' && this.password.trim() !== '';
+      return this.email.trim() !== '' && this.password.trim() !== '' && !this.emailError;
     },
     async login() {
+      this.errorMessage = "";
+      this.emailError = "";
+
       if (!this.email.trim() || !this.password.trim()) {
         this.errorMessage = "Email e senha são obrigatórios!";
         return;
       }
 
       this.loading = true;
-      this.errorMessage = "";
 
       try {
         const response = await loginUser(this.email, this.password);
