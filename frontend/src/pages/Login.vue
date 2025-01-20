@@ -3,14 +3,22 @@
     <v-card class="mx-auto pa-6" min-width="400">
       <v-card-title class="text-center">Login</v-card-title>
       <v-card-subtitle class="text-center">
-        Insira sua API Key para continuar
+        Insira seu email e senha para continuar
       </v-card-subtitle>
       <v-card-text>
         <v-text-field
-          v-model="apiKey"
-          label="API Key"
+          v-model="email"
+          label="Email"
           outlined
           required
+          type="email"
+        />
+        <v-text-field
+          v-model="password"
+          label="Senha"
+          outlined
+          required
+          type="password"
           :error-messages="errorMessage"
         />
       </v-card-text>
@@ -30,42 +38,44 @@
 </template>
 
 <script>
-import { getApiKey, validateApiKey } from "../api";
+import { authenticationToken, loginUser } from "../services/login";
 
 export default {
   data() {
     return {
-      apiKey: "",
+      email: "",
+      password: "",
       loading: false,
       errorMessage: "",
     };
   },
   beforeMount() {
-    const isAuthenticated = getApiKey();
+    const isAuthenticated = authenticationToken();
     if (isAuthenticated) {
       this.$router.push("/home");
     }
   },
   methods: {
     isFormValid() {
-      return this.apiKey.trim() !== '';
+      return this.email.trim() !== '' && this.password.trim() !== '';
     },
     async login() {
-      if (!this.apiKey.trim()) {
-        this.errorMessage = "A API Key é obrigatória!";
+      if (!this.email.trim() || !this.password.trim()) {
+        this.errorMessage = "Email e senha são obrigatórios!";
         return;
       }
 
       this.loading = true;
       this.errorMessage = "";
 
-      const isValid = await validateApiKey(this.apiKey);
-
-      if (isValid) {
-        localStorage.setItem("apiKey", this.apiKey);
-        this.$router.push("/home");
-      } else {
-        this.errorMessage = "API Key inválida. Verifique e tente novamente.";
+      try {
+        const response = await loginUser(this.email, this.password);
+        if (response.token) {
+          saveSession(response.token);
+          this.$router.push("/home");
+        }
+      } catch (error) {
+        this.errorMessage = "Erro ao realizar o login. Tente novamente.";
       }
 
       this.loading = false;

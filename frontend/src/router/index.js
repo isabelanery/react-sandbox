@@ -3,7 +3,7 @@ import Login from '../pages/Login.vue';
 import Home from '../pages/Home.vue';
 import Video from '../pages/Video.vue';
 import NotFound from '../pages/NotFound.vue';
-import { getApiKey } from '../api';
+import { authenticationToken } from '../services/login';
 
 const routes = [
   { path: '/', component: Login },
@@ -18,7 +18,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _from, next) => {
-  const isAuthenticated = !!getApiKey();
+  const isAuthenticated = !!authenticationToken();
 
   if (to.meta.requiresAuth && !isAuthenticated) {
     next('/');
