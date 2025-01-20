@@ -75,12 +75,13 @@
 </template>
 
 <script>
-import { getApiKey, getVideoData, updateVideoTitle } from "../api";
+import { getVideoData, updateVideoTitle } from "../api";
+import { authenticationToken } from "../services/login";
 
 export default {
   data() {
     return {
-      apiKey: '',
+      jwtToken: '',
       videoId: '',
       video: null,
       isLoading: true,
@@ -95,7 +96,7 @@ export default {
       this.isLoading = true;
 
       try {
-        const videoData = await getVideoData(this.apiKey, this.videoId);
+        const videoData = await getVideoData(this.jwtToken, this.videoId);
         if (!videoData || !videoData.id) {
           throw new Error("Vídeo não encontrado ou ID inválido.");
         }
@@ -122,7 +123,7 @@ export default {
         return;
       }
       try {
-        const success = await updateVideoTitle(this.apiKey, this.videoId, this.editedTitle);
+        const success = await updateVideoTitle(this.jwtToken, this.videoId, this.editedTitle);
         if (success) {
           this.video.title = this.editedTitle;
           this.isEditing = false;
@@ -148,16 +149,16 @@ export default {
     },
   },
   created() {
-    this.apiKey = getApiKey();
+    this.jwtToken = authenticationToken();
     this.videoId = this.$route.params.videoId;
 
-    if (!this.apiKey || !this.videoId) {
+    if (!this.jwtToken || !this.videoId) {
       this.error = "Erro: ID do vídeo inválido.";
       return;
     }
   },
   async mounted() {
-    if (this.apiKey && this.videoId) {
+    if (this.jwtToken && this.videoId) {
       await this.fetchVideo();
     }
   },

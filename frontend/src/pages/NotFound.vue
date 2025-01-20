@@ -17,9 +17,9 @@
 <script setup>
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { getApiKey } from '../api'
+import { authenticationToken } from '../services/login';
 
-const isAuthenticated = getApiKey();
+const isAuthenticated = authenticationToken();
 
 const buttonText = computed(() => isAuthenticated ? 'Voltar para Home' : 'Ir para Login')
 

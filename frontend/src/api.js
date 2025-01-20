@@ -1,16 +1,35 @@
-// src/utils/api.js
-export async function validateApiKey(apiKey) {
-  return !!await fetchVideosListData(apiKey);
-}
+const API_BASE_URL = 'http://localhost:3000/api';
 
-export async function fetchVideosListData(apiKey, currentPage = 1) {
+export async function fetchVideosListData(jwtToken, currentPage = 1) {
   try {
-    const url = `https://api-v2.pandavideo.com.br/videos?page=${currentPage}`;
+    const url = `${API_BASE_URL}/videos?page=${currentPage}`;
 
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Authorization": `${apiKey}`,
+        "Authorization": `${jwtToken}`,
+        "Accept": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Dados recebidos:", data);
+      return data;
+    }
+  } catch (error) {
+    console.error("Erro ao realizar a requisição:", error);
+  }
+}
+
+export async function getVideoData(jwtToken, videoId) {
+  try {
+    const url = `${API_BASE_URL}/video/${videoId}`;
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Authorization": `${jwtToken}`,
         "Accept": "application/json"
       }
     });
@@ -20,13 +39,6 @@ export async function fetchVideosListData(apiKey, currentPage = 1) {
       console.log("Dados recebidos:", data);
 
       return data;
-    } else if (response.status === 401) {
-      console.error("API Key inválida!");
-      return;
-    } else {
-      const errorData = await response.json();
-      console.error("Erro ao validar a chave:", errorData);
-      return;
     }
   } catch (error) {
     console.error("Erro ao realizar a requisição:", error);
@@ -34,45 +46,14 @@ export async function fetchVideosListData(apiKey, currentPage = 1) {
   }
 }
 
-export async function getVideoData(apiKey, videoId) {
+export async function updateVideoTitle(jwtToken, videoId, newTitle) {
   try {
-    const url = `https://api-v2.pandavideo.com.br/videos/${videoId}`;
-
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Authorization": `${apiKey}`,
-        "Accept": "application/json"
-      }
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Dados recebidos:", data);
-
-      return data;
-    } else if (response.status === 401) {
-      console.error("API Key inválida!");
-      return;
-    } else {
-      const errorData = await response.json();
-      console.error("Erro ao validar a chave:", errorData);
-      return;
-    }
-  } catch (error) {
-    console.error("Erro ao realizar a requisição:", error);
-    return;
-  }
-}
-
-export async function updateVideoTitle(apiKey, videoId, newTitle) {
-  try {
-    const url = `https://api-v2.pandavideo.com.br/videos/${videoId}`;
+    const url = `${API_BASE_URL}/video/${videoId}`;
 
     const response = await fetch(url, {
       method: "PUT",
       headers: {
-        "Authorization": apiKey,
+        "Authorization": jwtToken,
         "Accept": "application/json",
         "Content-Type": "application/json"
       },
@@ -81,7 +62,7 @@ export async function updateVideoTitle(apiKey, videoId, newTitle) {
 
     if (response.ok) {
       console.log("Título atualizado com sucesso");
-      return true;
+      return data;
     }
   } catch (error) {
     console.error("Erro ao realizar a requisição:", error);
@@ -89,14 +70,14 @@ export async function updateVideoTitle(apiKey, videoId, newTitle) {
   }
 }
 
-export async function fetchFoldesData(apiKey) {
+export async function fetchFoldesData(jwtToken) {
   try {
-    const url = "https://api-v2.pandavideo.com.br/folders";
+    const url = `${API_BASE_URL}/folders`;
 
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Authorization": `${apiKey}`,
+        "Authorization": `${jwtToken}`,
         "Accept": "application/json"
       }
     });
@@ -113,20 +94,10 @@ export async function fetchFoldesData(apiKey) {
   }
 }
 
-export async function getFolders(apiKey) {
-  const data = await fetchFoldesData(apiKey);
+export async function getFolders(jwtToken) {
+  const data = await fetchFoldesData(jwtToken);
 
   return data?.folders.map((folder) => (
     { name: folder.name, id: folder.id, videoCount: folder.videos_count }
   ));
-}
-
-const API_KEY = 'apiKey';
-
-export function getApiKey() {
-  return localStorage.getItem(API_KEY);
-}
-
-export function deleteApiKey() {
-  localStorage.removeItem(API_KEY);
 }

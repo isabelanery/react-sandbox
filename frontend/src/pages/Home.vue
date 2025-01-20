@@ -48,13 +48,14 @@
 import SearchBar from '../components/SearchBar.vue';
 import VideoCard from '../components/VideoCard.vue';
 import EmptyState from '../components/EmptyState.vue';
-import { deleteApiKey, fetchVideosListData, getApiKey, getFolders } from '../api';
+import { fetchVideosListData, getFolders } from '../api';
+import { authenticationToken, endSession } from '../services/login';
 
 export default {
   components: { SearchBar, VideoCard, EmptyState },
   data() {
     return {
-      apiKey: '',
+      jwtToken: '',
       videos: [],
       folders: [],
       selectedFolder: null,
@@ -80,7 +81,7 @@ export default {
       this.isLoading = true;
 
       try {
-        const data = await fetchVideosListData(this.apiKey, this.currentPage);
+        const data = await fetchVideosListData(this.jwtToken, this.currentPage);
 
         this.videos = [...this.videos, ...data.videos];
         this.isLoading = false;
@@ -95,7 +96,7 @@ export default {
       this.isLoading = true;
 
       try {
-        this.folders = await getFolders(this.apiKey) || [];
+        this.folders = await getFolders(this.jwtToken) || [];
         this.isLoading = false;
       } catch (error) {
         console.error("Erro ao buscar pastas:", error);
@@ -109,8 +110,8 @@ export default {
       this.$router.push(`/video/${id}`);
     },
     logout() {
-      this.apiKey = '';
-      deleteApiKey();
+      this.jwtToken = '';
+      endSession();
       this.$router.push('/');
     },
     onScroll() {
@@ -125,15 +126,16 @@ export default {
     },
   },
   created() {
-    const apiKey = getApiKey();
-    if (!apiKey) {
+    const jwtToken = authenticationToken();
+    if (!jwtToken) {
       this.$router.push('/');
     }
   },
   async mounted() {
-    this.apiKey = getApiKey() || '';
 
-    if (this.apiKey) {
+    this.jwtToken = authenticationToken() || '';
+
+    if (this.jwtToken) {
       await this.fetchFolders();
       await this.fetchVideos();
     }
