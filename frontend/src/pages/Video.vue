@@ -1,7 +1,7 @@
 <template>
   <v-container width="670px">
     <div class="button_container">
-      <v-btn class="mb-8" @click="goHome" text>Voltar para a Home</v-btn>
+      <v-btn class="mb-8" @click="goHome" text>Voltar para Home</v-btn>
     </div>
 
     <v-alert v-if="error" type="error" class="mb-4">

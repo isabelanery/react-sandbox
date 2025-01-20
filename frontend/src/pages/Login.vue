@@ -7,6 +7,7 @@
       </v-card-subtitle>
       <v-card-text>
         <v-text-field
+          data-testid="email-input"
           v-model="email"
           label="Email"
           outlined
@@ -27,6 +28,7 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
+          data-testid="login"
           block
           color="primary"
           size="large"

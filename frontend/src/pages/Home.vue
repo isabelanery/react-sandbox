@@ -4,7 +4,7 @@
   </div>
 
   <v-container width="800px">
-    <SearchBar v-model="searchQuery" />
+    <SearchBar v-model="searchQuery" data-testid="search-input" />
 
     <div class="videos-container">
       <div v-if="videos.length > 0">
