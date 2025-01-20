@@ -1,7 +1,6 @@
-version: '3'
+version: '3.8'
 services:
   db:
-    container_name: db
     image: postgres:alpine
     environment:
       POSTGRES_USER: user
@@ -16,7 +15,6 @@ services:
     ports:
       - "6379:6379"
   backend:
-    container_name: backend
     build: ./backend
     ports:
       - "3000:3000"
@@ -29,10 +27,10 @@ services:
       DB_PORT: 5432
     volumes:
       - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - db
   frontend:
-    container_name: frontend
     build: ./frontend
     ports:
       - "8080:8080"

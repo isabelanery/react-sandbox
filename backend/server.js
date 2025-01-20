@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 sequelize.sync().then(() => {
-  console.log('Banco de dados conectado');
+  console.log('🟢 Banco de dados conectado');
 });
 
 app.use('/api', userRoutes);

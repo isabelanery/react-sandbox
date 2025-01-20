@@ -62,7 +62,7 @@ export async function updateVideoTitle(jwtToken, videoId, newTitle) {
 
     if (response.ok) {
       console.log("Título atualizado com sucesso");
-      return data;
+      return true;
     }
   } catch (error) {
     console.error("Erro ao realizar a requisição:", error);
