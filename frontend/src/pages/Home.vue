@@ -1,7 +1,9 @@
 <template>
-  <v-btn @click="logout" text class="mb-8">Logout</v-btn>
+  <div class="button_container">
+    <v-btn @click="logout" text class="mb-4 ml-4">Logout</v-btn>
+  </div>
 
-  <v-container width="800px" class="mt-6">
+  <v-container width="800px">
     <SearchBar v-model="searchQuery" />
 
     <div class="videos-container">
@@ -155,5 +157,15 @@ export default {
 
 .videos-container {
   min-height: 80vh;
+}
+
+.button_container {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.button_wrapper {
+  padding: 0 16px;
 }
 </style>

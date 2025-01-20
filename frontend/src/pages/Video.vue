@@ -1,6 +1,8 @@
 <template>
-  <v-container>
-    <v-btn class="ml-4 mb-8" @click="goHome" text>Voltar para a Home</v-btn>
+  <v-container width="670px">
+    <div class="button_container">
+      <v-btn class="mb-8" @click="goHome" text>Voltar para a Home</v-btn>
+    </div>
 
     <v-alert v-if="error" type="error" class="mb-4">
       {{ error }}
@@ -16,7 +18,7 @@
       ></v-progress-circular>
     </div>
 
-    <v-card v-if="video && !error">
+    <v-card v-if="video && !error" class="rounded-lg p-4">
       <v-card-text>
         <iframe
           v-if="video.video_player"
@@ -194,10 +196,14 @@ export default {
 }
 
 .loading_container {
-  width: 400px;
+  width: 100%;
   height: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.p-4 {
+  padding: 4px;
 }
 </style>

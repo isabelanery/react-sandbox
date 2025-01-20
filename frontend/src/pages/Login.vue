@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-card class="mx-auto pa-6" min-width="400">
-      <v-card-title class="text-center">Login</v-card-title>
+    <v-card class="mx-auto pa-6 rounded-lg" min-width="400">
+      <v-card-title class="text-center">LOGIN</v-card-title>
       <v-card-subtitle class="text-center">
         Insira seu email e senha para continuar
       </v-card-subtitle>
@@ -29,6 +29,9 @@
         <v-btn
           block
           color="primary"
+          size="large"
+          rounded="lg"
+          variant="flat"
           :loading="loading"
           @click="login"
           :disabled="!isFormValid()"
