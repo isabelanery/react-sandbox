@@ -1,5 +1,3 @@
-# Panda Video 🐼🎥
-
 ## 🚀 Setup
 
 1. **Clone o repositório:**
@@ -8,7 +6,7 @@
    cd panda_video
    ```
 2. **Configuração do ambiente:**
-   - Renomeie `.env.example` para `.env` e adicione sua `API_KEY` da Panda Video.
+   - Renomeie `/backend/.env.example` para `.env` e adicione sua `API_KEY` da Panda Video.
 
 3. **Subindo a aplicação:**
    ```sh
@@ -23,10 +21,19 @@
 Usuário pré-cadastrado:
 ```sh
 email: kungfu@panda.com
-password: kungfupanda
+password: password
 ```
 
-## 📦 Tecnologias Utilizadas
+## 💪 Testando o Frontend
+
+Para rodar os testes do frontend:
+```sh
+cd frontend
+npm install
+npm run test
+```
+
+## 🛋️ Tecnologias Utilizadas
 
 - **Frontend**:
   - Vue.js
@@ -56,4 +63,3 @@ password: kungfupanda
 
 
 🚀 Bom uso!
-
