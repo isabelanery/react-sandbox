@@ -2,8 +2,8 @@
 
 1. **Clone o repositório:**
    ```sh
-   git clone git@github.com:isabelanery/panda_videos.git
-   cd panda_video
+   git clone git@github.com:isabelanery/video_list.git
+   cd video_list
    ```
 2. **Configuração do ambiente:**
    - Renomeie `/backend/.env.example` para `.env` e adicione sua `API_KEY` da Panda Video.
