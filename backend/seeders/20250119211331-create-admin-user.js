@@ -8,8 +8,6 @@ module.exports = {
       {
         email: "kungfu@panda.com",
         password: await bcrypt.hash("password", 10),
-        createdAt: new Date(),
-        updatedAt: new Date()
       }
     ]);
   },
