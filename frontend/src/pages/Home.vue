@@ -51,7 +51,7 @@
 import SearchBar from '../components/SearchBar.vue';
 import VideoCard from '../components/VideoCard.vue';
 import EmptyState from '../components/EmptyState.vue';
-import { fetchVideosListData, getFolders } from '../api';
+import { fetchVideosListData, getFolders } from '../services/api';
 import { authenticationToken, endSession } from '../services/login';
 
 export default {

@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { getVideoData, updateVideoTitle } from "../api";
+import { getVideoData, updateVideoTitle } from "../services/api";
 import { authenticationToken } from "../services/login";
 
 export default {

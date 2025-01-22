@@ -3,7 +3,7 @@ import { createVuetify } from 'vuetify';
 import Login from '../../src/pages/Login.vue';
 import { describe, it, expect, beforeEach } from 'vitest';
 
-vi.mock('../../src/api');
+vi.mock('../../src/services/api');
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: vi.fn(),

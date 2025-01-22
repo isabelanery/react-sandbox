@@ -5,7 +5,7 @@ import { mount } from '@vue/test-utils';
 import Video from '../../src/pages/Video.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
-vi.mock('../../src/api', () => ({
+vi.mock('../../src/services/api', () => ({
   getVideoData: vi.fn().mockResolvedValue({
      id: 1, title: 'Video 1', folder_id: 1, thumbnail: '', description: 'Description'
   }),

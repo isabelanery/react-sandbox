@@ -6,7 +6,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { render } from '@testing-library/vue';
 
-vi.mock('../../src/api', () => ({
+vi.mock('../../src/services/api', () => ({
   fetchVideosListData: vi.fn().mockResolvedValue({
     videos: [
       { id: 1, title: 'Video 1', folder_id: 1, thumbnail: '' },
